@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>مصحف رفيق القرآن</title>
     <style>
-        /* منع إيماءات اللمس الخاصة بالتكبير */
         body { 
             margin: 0; padding: 0; background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; 
             display: flex; flex-direction: column; height: 100vh; overflow: hidden; 
-            touch-action: pan-x pan-y; /* سحر المنع: يسمح بالتمرير فقط */
+            touch-action: pan-x pan-y; /* يمنع الزووم ويسمح بالتحريك */
         }
         
         .controls {
@@ -22,13 +21,13 @@
         .btn-gold { background: #d4ac0d; color: black; font-size: 1.2rem; padding: 5px 20px; }
         
         .page-info { 
-            font-size: 1.1rem; font-weight: bold; color: #fff; 
+            font-size: 1rem; font-weight: bold; color: #fff; 
             background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px;
         }
 
         #canvas-container {
             flex: 1; overflow: auto; display: flex; justify-content: center; align-items: flex-start;
-            padding: 10px; position: relative; touch-action: pan-x pan-y; /* تأكيد المنع */
+            padding: 10px; position: relative; touch-action: pan-x pan-y;
         }
         canvas {
             box-shadow: 0 0 20px rgba(0,0,0,0.5); max-width: 100%; height: auto;
@@ -46,9 +45,7 @@
 
     <div class="controls">
         <button class="btn" onclick="goBack()">✕ خروج</button>
-        
         <span class="page-info" id="displayPageNum">تحميل...</span>
-        
         <div style="display:flex; gap:5px;">
             <button class="btn btn-gold" onclick="changePage(-1)">❮</button>
             <button class="btn btn-gold" onclick="changePage(1)">❯</button>
@@ -62,13 +59,8 @@
 
     <script>
         // --- كود خاص لمنع التكبير (Pinch Zoom) على الآيفون ---
-        document.addEventListener('gesturestart', function(e) {
-            e.preventDefault();
-        });
-        document.addEventListener('dblclick', function(e) {
-            e.preventDefault();
-        });
-        // ---------------------------------------------------
+        document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
+        document.addEventListener('dblclick', function(e) { e.preventDefault(); });
 
         const urlParams = new URLSearchParams(window.location.search);
         let desiredPage = parseInt(urlParams.get('page')) || 4; 
@@ -81,7 +73,7 @@
             canvas = document.getElementById('the-canvas'),
             ctx = canvas.getContext('2d');
 
-        const url = 'quran.pdf';
+        const url = 'quran.pdf'; // تأكد أن الاسم مطابق
         
         document.getElementById('loader').style.display = 'block';
 
@@ -98,25 +90,21 @@
         function renderPage(num) {
             pageRendering = true;
             
-            // --- المعادلة الذكية لعرض الرقم الصحيح ---
+            // --- المعادلة الذكية لعرض الرقم ---
             const displayLabel = document.getElementById('displayPageNum');
             if (num <= 3) {
                 displayLabel.innerText = "فهرس";
             } else {
-                // الرقم في الملف (ناقص) 3 = رقم صفحة المصحف
                 displayLabel.innerText = "صفحة " + (num - 3);
             }
-            // ---------------------------------------
 
             pdfDoc.getPage(num).then(function(page) {
                 const containerWidth = document.getElementById('canvas-container').clientWidth - 20;
                 const viewport = page.getViewport({scale: 1});
-                
                 let outputScale = containerWidth / viewport.width;
                 if (outputScale < 1) outputScale = 1; 
                 
                 const scaledViewport = page.getViewport({scale: outputScale});
-
                 canvas.height = scaledViewport.height;
                 canvas.width = scaledViewport.width;
 
@@ -126,7 +114,6 @@
                 };
                 
                 const renderTask = page.render(renderContext);
-
                 renderTask.promise.then(function() {
                     pageRendering = false;
                     if (pageNumPending !== null) {
@@ -138,11 +125,7 @@
         }
 
         function queueRenderPage(num) {
-            if (pageRendering) {
-                pageNumPending = num;
-            } else {
-                renderPage(num);
-            }
+            if (pageRendering) { pageNumPending = num; } else { renderPage(num); }
         }
 
         function changePage(offset) {
