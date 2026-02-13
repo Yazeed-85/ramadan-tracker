@@ -90,40 +90,15 @@
         .separator { text-align: center; margin: 30px 0 20px 0; color: var(--separator-color); font-weight: bold; font-size: 0.95rem; position: relative; opacity: 0.8; }
         .separator::before, .separator::after { content: ''; display: inline-block; width: 50px; height: 1px; background: var(--separator-color); vertical-align: middle; margin: 0 10px; opacity: 0.5; }
         
-        /* تنسيق الفوتر والأزرار الجديدة */
-        .footer-actions {
-            display: flex;
-            justify-content: center;
-            gap: 15px; /* مسافة بين الزرين */
-            margin-top: 40px;
-            padding-bottom: 30px;
-        }
-        
-        .action-btn {
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
+        /* تنسيق الفوتر والأزرار */
+        .footer-actions { display: flex; justify-content: center; gap: 15px; margin-top: 40px; padding-bottom: 30px; }
+        .action-btn { border: none; padding: 8px 20px; border-radius: 20px; font-size: 0.9rem; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: transform 0.2s; }
         .action-btn:active { transform: scale(0.95); }
-
-        .reset-btn {
-            background-color: #e74c3c;
-            color: white;
-            opacity: 0.8;
-        }
+        .reset-btn { background-color: #e74c3c; color: white; opacity: 0.8; }
         .reset-btn:hover { opacity: 1; }
+        .about-btn { background-color: var(--primary); color: white; }
 
-        .about-btn {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        /* تنسيق محتوى نافذة حول */
+        /* تنسيق نافذة حول */
         .about-content { text-align: right; line-height: 1.6; }
         .about-section { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
         .about-section:last-child { border: none; }
@@ -199,9 +174,11 @@
             <div class="summary-label">إجمالي ما قرأت حتى الآن</div>
             <div class="summary-number" id="mainTotal">0</div>
             <div class="summary-label">صفحة</div>
-            <div style="margin-top: 15px; font-size: 0.8rem; opacity: 0.7; border-top: 1px solid var(--border-color); padding-top: 10px;">
-                (كل يوم 20 صفحة = ختمة كاملة)
-                <span style="color: #e91e63; font-weight: bold; margin-right: 5px;"> لا تنسوني من صالح دعائكم ♡♡</span>
+            <div style="margin-top: 15px; font-size: 0.8rem; opacity: 0.9; border-top: 1px solid var(--border-color); padding-top: 10px;">
+                <div style="opacity: 0.7;">(كل يوم 20 صفحة = ختمة كاملة)</div>
+                <div style="margin-top: 8px; font-size: 0.75rem; color: var(--text-sub); opacity: 0.8;">
+                    لا تنسوني من صالح دعائكم ♥♥
+                </div>
             </div>
         </div>
         <div id="daysContainer"></div>
@@ -252,15 +229,12 @@
             document.getElementById('themeBtn').innerText = theme === 'light' ? '🌙' : '☀️';
         }
 
-        // دالة فتح المودال (عامة)
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'flex';
         }
-        // دالة إغلاق المودال (عامة)
         function closeModal(modalId, e) {
             if (e === null || e.target.id === modalId || e.target.classList.contains('complete-btn')) {
                 document.getElementById(modalId).style.display = 'none';
-                // إذا تم إغلاق الإعدادات، نعيد الرسم للتحديث
                 if(modalId === 'settingsModal') render();
             }
         }
