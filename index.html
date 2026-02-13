@@ -43,7 +43,11 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; transition: background 0.3s, color 0.3s; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text-main); padding-bottom: 80px; }
         header { background: var(--header-grad); color: white; padding: 25px 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 25px; position: relative; z-index: 10; }
-        .header-title { font-size: 1.5rem; margin: 0 0 10px 0; font-weight: 800; }
+        .header-title { font-size: 1.5rem; margin: 0 0 5px 0; font-weight: 800; }
+        
+        /* تنسيق رقم الإصدار */
+        .version-tag { font-size: 0.8rem; opacity: 0.8; font-family: monospace; letter-spacing: 1px; margin-bottom: 5px; display: block; }
+
         .datetime { font-size: 0.9rem; opacity: 0.9; background: rgba(255,255,255,0.15); padding: 5px 12px; border-radius: 20px; display: inline-block; margin-top: 5px; }
         .header-icons { position: absolute; top: 20px; left: 20px; display: flex; gap: 10px; z-index: 20; }
         .icon-btn { background: rgba(255,255,255,0.2); border: none; color: white; width: 44px; height: 44px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
@@ -77,34 +81,57 @@
         .complete-btn { width: calc(100% - 40px); margin: 0 20px 20px 20px; padding: 14px; background-color: var(--primary); color: var(--bg); border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; }
         .complete-btn.done { background-color: #27ae60; color: white; pointer-events: none; }
         [data-theme="dark"] .complete-btn { color: #000; }
+        
+        /* Modal Styles */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 5000; align-items: center; justify-content: center; flex-direction: column; }
-        .settings-container { background: var(--card-bg); width: 90%; max-width: 400px; padding: 20px; border-radius: 15px; color: var(--text-main); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .modal-container { background: var(--card-bg); width: 90%; max-width: 400px; padding: 20px; border-radius: 15px; color: var(--text-main); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 85vh; overflow-y: auto; }
         .settings-row { margin: 15px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
         .external-btn { background: #d4ac0d; color: #000; border: none; padding: 5px 15px; border-radius: 5px; font-weight: bold; text-decoration: none; font-size: 0.85rem; }
         .separator { text-align: center; margin: 30px 0 20px 0; color: var(--separator-color); font-weight: bold; font-size: 0.95rem; position: relative; opacity: 0.8; }
         .separator::before, .separator::after { content: ''; display: inline-block; width: 50px; height: 1px; background: var(--separator-color); vertical-align: middle; margin: 0 10px; opacity: 0.5; }
         
-        /* تنسيق زر الحذف الجديد */
-        .danger-zone {
-            text-align: center;
+        /* تنسيق الفوتر والأزرار الجديدة */
+        .footer-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* مسافة بين الزرين */
             margin-top: 40px;
-            padding-bottom: 20px;
-            opacity: 0.6; /* شفاف قليلاً حتى لا يزعج العين */
-            transition: opacity 0.3s;
+            padding-bottom: 30px;
         }
-        .danger-zone:hover {
-            opacity: 1; /* يوضح عند الاقتراب */
+        
+        .action-btn {
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
         }
-        .reset-app-btn {
+        .action-btn:active { transform: scale(0.95); }
+
+        .reset-btn {
             background-color: #e74c3c;
             color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            opacity: 0.8;
         }
+        .reset-btn:hover { opacity: 1; }
+
+        .about-btn {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* تنسيق محتوى نافذة حول */
+        .about-content { text-align: right; line-height: 1.6; }
+        .about-section { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
+        .about-section:last-child { border: none; }
+        .about-title { color: var(--primary); font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; display: block; }
+        .warning-box { background: rgba(231, 76, 60, 0.1); border: 1px solid #e74c3c; padding: 10px; border-radius: 8px; color: #c0392b; font-size: 0.9rem; margin-top: 10px; }
+        .info-list { list-style: none; padding: 0; margin: 0; font-size: 0.95rem; }
+        .info-list li { margin-bottom: 8px; }
+
     </style>
 </head>
 <body>
@@ -113,23 +140,57 @@
         <div class="tracker-bubble"><span id="floatCount">0</span></div>
     </div>
 
-    <div id="settingsModal" class="modal-overlay" onclick="closeSettings(event)">
-        <div class="settings-container">
+    <div id="settingsModal" class="modal-overlay" onclick="closeModal('settingsModal', event)">
+        <div class="modal-container">
             <h3>⚙️ الإعدادات</h3>
             <div class="settings-row">
                 <span>تعديل بداية رمضان</span>
                 <button class="external-btn" onclick="adjustStartDate()">تغيير (±1 يوم)</button>
             </div>
-            <button class="complete-btn" onclick="closeSettings(null)">حفظ وإغلاق</button>
+            <button class="complete-btn" onclick="closeModal('settingsModal', null)">حفظ وإغلاق</button>
+        </div>
+    </div>
+
+    <div id="aboutModal" class="modal-overlay" onclick="closeModal('aboutModal', event)">
+        <div class="modal-container">
+            <h3 style="margin-top:0;">حول التطبيق ℹ️</h3>
+            <div class="about-content">
+                
+                <div class="about-section">
+                    <span class="about-title">📘 دليل الاستخدام</span>
+                    <ul class="info-list">
+                        <li>🌙 <b>الوضع الليلي:</b> اضغط زر الهلال بالأعلى لراحة عينيك.</li>
+                        <li>✅ <b>حفظ التقدم:</b> ضع علامة صح أمام الصلوات، أو اضغط زر "قرأت ورد اليوم" لإكمال اليوم كاملاً.</li>
+                        <li>🎨 <b>الألوان:</b>
+                            <br> - <span style="color:#2ecc71; font-weight:bold;">الأخضر:</span> أنت مواكب للجدول.
+                            <br> - <span style="color:#f1c40f; font-weight:bold;">الأصفر:</span> فاتك يوم واحد.
+                            <br> - <span style="color:#e74c3c; font-weight:bold;">الأحمر:</span> فاتك أكثر من يوم.
+                        </li>
+                        <li>📊 <b>المربع العلوي:</b> يظهر لك إجمالي الصفحات التي قرأتها.</li>
+                    </ul>
+                </div>
+
+                <div class="about-section">
+                    <span class="about-title">⚠️ تنبيه هام جداً للبيانات</span>
+                    <div class="warning-box">
+                        هذا التطبيق يعمل <b>محلياً</b> على جهازك. 
+                        <br><br>
+                        بيانات الختمة محفوظة داخل هذا المتصفح فقط. إذا قمت بعمل <b>"مسح بيانات المتصفح"</b> (Clear History/Cache) أو إعادة تهيئة، <b>فسوف يتم حذف ختمتك</b> وستضطر للبدء من جديد.
+                    </div>
+                </div>
+
+            </div>
+            <button class="complete-btn" onclick="closeModal('aboutModal', null)">فهمت</button>
         </div>
     </div>
 
     <header>
         <div class="header-icons">
             <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
-            <button class="icon-btn" onclick="openSettings()">⚙️</button>
+            <button class="icon-btn" onclick="openModal('settingsModal')">⚙️</button>
         </div>
         <h1 class="header-title">رفيق القرآن 🌙</h1>
+        <span class="version-tag">V1.1</span>
         <div class="datetime" id="clock">...</div>
     </header>
 
@@ -140,12 +201,14 @@
             <div class="summary-label">صفحة</div>
             <div style="margin-top: 15px; font-size: 0.8rem; opacity: 0.7; border-top: 1px solid var(--border-color); padding-top: 10px;">
                 (كل يوم 20 صفحة = ختمة كاملة)
+                <span style="color: #e91e63; font-weight: bold; margin-right: 5px;"> لا تنسوني من صالح دعائكم ♥♥</span>
             </div>
         </div>
         <div id="daysContainer"></div>
 
-        <div class="danger-zone">
-            <button class="reset-app-btn" onclick="resetAllData()">🗑️ حذف جميع البيانات والبدء من جديد</button>
+        <div class="footer-actions">
+            <button class="action-btn about-btn" onclick="openModal('aboutModal')">حول</button>
+            <button class="action-btn reset-btn" onclick="resetAllData()">إعادة التعيين</button>
         </div>
     </div>
 
@@ -189,24 +252,27 @@
             document.getElementById('themeBtn').innerText = theme === 'light' ? '🌙' : '☀️';
         }
 
-        function openSettings() {
-            document.getElementById('settingsModal').style.display = 'flex';
+        // دالة فتح المودال (عامة)
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
         }
-        function closeSettings(e) {
-            if (e === null || e.target.id === 'settingsModal' || e.target.classList.contains('complete-btn')) {
-                document.getElementById('settingsModal').style.display = 'none';
-                render(); 
+        // دالة إغلاق المودال (عامة)
+        function closeModal(modalId, e) {
+            if (e === null || e.target.id === modalId || e.target.classList.contains('complete-btn')) {
+                document.getElementById(modalId).style.display = 'none';
+                // إذا تم إغلاق الإعدادات، نعيد الرسم للتحديث
+                if(modalId === 'settingsModal') render();
             }
         }
+
         function adjustStartDate() {
             dateOffset = (dateOffset === 0) ? 1 : 0;
             localStorage.setItem('date_offset', dateOffset);
             alert("تم تغيير تاريخ البداية.");
         }
         
-        // --- دالة الحذف الجديدة ---
         function resetAllData() {
-            if(confirm("تحذير! ⚠️\n\nهل أنت متأكد من حذف جميع بيانات الختمة والعودة للصفر؟\nلا يمكن التراجع عن هذا الإجراء.")) {
+            if(confirm("تحذير! ⚠️\n\nهل أنت متأكد من حذف جميع بيانات الختمة والبدء من الصفر؟\n\nلا يمكن التراجع عن هذا الإجراء.")) {
                 localStorage.clear();
                 location.reload();
             }
