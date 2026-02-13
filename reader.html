@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>مصحف رفيق القرآن</title>
     <style>
-        /* منع التكبير والتحكم في اللمس */
+        /* منع إيماءات اللمس الخاصة بالتكبير */
         body { 
             margin: 0; padding: 0; background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; 
             display: flex; flex-direction: column; height: 100vh; overflow: hidden; 
-            touch-action: pan-x pan-y; 
+            touch-action: pan-x pan-y; /* سحر المنع: يسمح بالتمرير فقط */
         }
         
-        /* الشريط العلوي */
         .controls {
             background: #1e1e1e; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.5); z-index: 100; height: 60px;
@@ -22,7 +21,6 @@
         }
         .btn-gold { background: #d4ac0d; color: black; font-size: 1.2rem; padding: 5px 20px; }
         
-        /* تنسيق رقم الصفحة في المنتصف */
         .page-info { 
             font-size: 1.1rem; font-weight: bold; color: #fff; 
             background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px;
@@ -30,7 +28,7 @@
 
         #canvas-container {
             flex: 1; overflow: auto; display: flex; justify-content: center; align-items: flex-start;
-            padding: 10px; position: relative; touch-action: pan-x pan-y;
+            padding: 10px; position: relative; touch-action: pan-x pan-y; /* تأكيد المنع */
         }
         canvas {
             box-shadow: 0 0 20px rgba(0,0,0,0.5); max-width: 100%; height: auto;
@@ -63,8 +61,17 @@
     </div>
 
     <script>
+        // --- كود خاص لمنع التكبير (Pinch Zoom) على الآيفون ---
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+        document.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+        });
+        // ---------------------------------------------------
+
         const urlParams = new URLSearchParams(window.location.search);
-        let desiredPage = parseInt(urlParams.get('page')) || 4; // الافتراضي صفحة 4 (أول صفحة مصحف)
+        let desiredPage = parseInt(urlParams.get('page')) || 4; 
 
         let pdfDoc = null,
             pageNum = desiredPage,
@@ -91,15 +98,15 @@
         function renderPage(num) {
             pageRendering = true;
             
-            // --- المعادلة الذكية لعرض الرقم ---
+            // --- المعادلة الذكية لعرض الرقم الصحيح ---
             const displayLabel = document.getElementById('displayPageNum');
             if (num <= 3) {
-                displayLabel.innerText = "فهرس-" + num;
+                displayLabel.innerText = "فهرس";
             } else {
-                // نطرح 3 لأن أول 3 صفحات هي الفهرس
+                // الرقم في الملف (ناقص) 3 = رقم صفحة المصحف
                 displayLabel.innerText = "صفحة " + (num - 3);
             }
-            // --------------------------------
+            // ---------------------------------------
 
             pdfDoc.getPage(num).then(function(page) {
                 const containerWidth = document.getElementById('canvas-container').clientWidth - 20;
