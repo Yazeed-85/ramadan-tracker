@@ -5,41 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>رفيق القرآن - رمضان 1447</title>
     <meta name="theme-color" content="#1e3c72">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
-        :root {
-            --primary: #1e3c72;
-            --header-grad: linear-gradient(135deg, #1e3c72, #2a5298);
-            --bg: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-main: #2d3436;
-            --text-sub: #636e72;
-            --border-color: #e0e0e0;
-            --status-current-bg: #e8f5e9;
-            --status-current-border: #4caf50;
-            --status-warn-bg: #fffde7;
-            --status-warn-border: #fbc02d;
-            --status-danger-bg: #ffebee;
-            --status-danger-border: #e57373;
-            --separator-color: #888;
-        }
-        [data-theme="dark"] {
-            --primary: #64b5f6;
-            --header-grad: linear-gradient(135deg, #0d1b2a, #1b263b);
-            --bg: #121212;
-            --card-bg: #1e1e1e;
-            --text-main: #e0e0e0;
-            --text-sub: #b0b0b0;
-            --border-color: #333;
-            --status-current-bg: #1b3a20;
-            --status-current-border: #2e7d32;
-            --status-warn-bg: #3e3818;
-            --status-warn-border: #f9a825;
-            --status-danger-bg: #3e1b1b;
-            --status-danger-border: #c62828;
-            --separator-color: #aaa;
-        }
+        /* ... (نفس الستايل السابق تماماً) ... */
+        :root { --primary: #1e3c72; --header-grad: linear-gradient(135deg, #1e3c72, #2a5298); --bg: #f8f9fa; --card-bg: #ffffff; --text-main: #2d3436; --text-sub: #636e72; --border-color: #e0e0e0; --status-current-bg: #e8f5e9; --status-current-border: #4caf50; --status-warn-bg: #fffde7; --status-warn-border: #fbc02d; --status-danger-bg: #ffebee; --status-danger-border: #e57373; --separator-color: #888; }
+        [data-theme="dark"] { --primary: #64b5f6; --header-grad: linear-gradient(135deg, #0d1b2a, #1b263b); --bg: #121212; --card-bg: #1e1e1e; --text-main: #e0e0e0; --text-sub: #b0b0b0; --border-color: #333; --status-current-bg: #1b3a20; --status-current-border: #2e7d32; --status-warn-bg: #3e3818; --status-warn-border: #f9a825; --status-danger-bg: #3e1b1b; --status-danger-border: #c62828; --separator-color: #aaa; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; transition: background 0.3s, color 0.3s; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text-main); padding-bottom: 80px; }
         header { background: var(--header-grad); color: white; padding: 25px 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 25px; position: relative; z-index: 10; }
@@ -72,11 +41,8 @@
         .custom-checkbox { width: 24px; height: 24px; accent-color: var(--primary); cursor: pointer; }
         .prayer-label { font-size: 1rem; flex: 1; color: var(--text-main); display: flex; flex-direction: column; }
         .page-range { font-size: 0.85rem; color: var(--text-sub); margin-top: 2px; }
-        
-        /* Read Button */
         .read-btn { background-color: #27ae60; color: white; border: none; border-radius: 8px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; flex-shrink: 0; text-decoration: none; }
         .read-btn:hover { transform: scale(1.1); background-color: #219150; }
-        
         .complete-btn { width: calc(100% - 40px); margin: 0 20px 20px 20px; padding: 14px; background-color: var(--primary); color: var(--bg); border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; }
         .complete-btn.done { background-color: #27ae60; color: white; pointer-events: none; }
         [data-theme="dark"] .complete-btn { color: #000; }
@@ -140,8 +106,9 @@
         let db = JSON.parse(localStorage.getItem('ramadan_db_v2')) || {};
         let dateOffset = parseInt(localStorage.getItem('date_offset')) || 0;
         
-        // --- تثبيت وزنية الصفحات إلى 3 ---
-        const PDF_OFFSET = 3;
+        // --- 🔴 إصلاح الوزنية الإجباري 🔴 ---
+        // تم إلغاء القراءة من الذاكرة القديمة لضمان أن الرقم 3 دائماً
+        const PDF_OFFSET = 3; 
 
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
@@ -213,17 +180,14 @@
                 const dayData = db[dayId] || {};
                 
                 let prayersDone = 0;
-                let dayPagesRead = 0;
-                const dayStartPageGlobal = (i * 20) + 1;
-
-                PRAYERS.forEach((p) => {
+                let dayPages = 0;
+                PRAYERS.forEach(p => {
                     if (dayData[p.id]) {
                         prayersDone++;
-                        dayPagesRead += p.pages;
+                        dayPages += p.pages;
                     }
                 });
-
-                grandTotalPages += dayPagesRead;
+                grandTotalPages += dayPages;
                 const isComplete = prayersDone === 5;
 
                 let statusClass = '';
@@ -245,8 +209,8 @@
 
                 header.innerHTML = `
                     <div class="date-group">
-                        <span class="day-name">${i + 1} رمضان - ${currentDate.toLocaleDateString('ar-SA', { weekday: 'long' })}</span>
-                        <span class="day-date">${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}</span>
+                        <span class="day-name">${i + 1} رمضان - ${getDayName(currentDate)}</span>
+                        <span class="day-date">${formatDate(currentDate)}</span>
                     </div>
                     <div class="status-badge" style="color:${checkColor}">
                         ${isComplete ? '✅' : `${prayersDone}/5`}
@@ -279,8 +243,7 @@
                     lbl.onclick = () => { chk.checked = !chk.checked; togglePrayer(dayId, p.id, chk.checked); };
                     lbl.style.cursor = 'pointer';
 
-                    // --- استخدام الوزنية الثابتة (3) ---
-                    const pdfPage = pStartPage + PDF_OFFSET;
+                    const pdfPage = pStartPage + PDF_OFFSET; // سيصبح 1 + 3 = 4 (صحيح)
                     const pdfUrl = 'reader.html?page=' + pdfPage;
                     
                     const readLink = document.createElement('a');
@@ -319,16 +282,21 @@
             document.getElementById('floatCount').innerText = grandTotalPages;
         }
 
+        const getDayName = (date) => date.toLocaleDateString('ar-SA', { weekday: 'long' });
+        const formatDate = (date) => `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
         function togglePrayer(dayId, prayerId, state) {
             if (!db[dayId]) db[dayId] = {};
             db[dayId][prayerId] = state;
             save();
         }
+
         function completeDay(dayId) {
             if (!db[dayId]) db[dayId] = {};
             PRAYERS.forEach(p => db[dayId][p.id] = true);
             save();
         }
+
         function save() {
             localStorage.setItem('ramadan_db_v2', JSON.stringify(db));
             render();
