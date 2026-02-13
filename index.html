@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>رفيق القرآن - رمضان 1447</title>
     <meta name="theme-color" content="#1e3c72">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
         :root {
             --primary: #1e3c72;
@@ -81,6 +83,28 @@
         .external-btn { background: #d4ac0d; color: #000; border: none; padding: 5px 15px; border-radius: 5px; font-weight: bold; text-decoration: none; font-size: 0.85rem; }
         .separator { text-align: center; margin: 30px 0 20px 0; color: var(--separator-color); font-weight: bold; font-size: 0.95rem; position: relative; opacity: 0.8; }
         .separator::before, .separator::after { content: ''; display: inline-block; width: 50px; height: 1px; background: var(--separator-color); vertical-align: middle; margin: 0 10px; opacity: 0.5; }
+        
+        /* تنسيق زر الحذف الجديد */
+        .danger-zone {
+            text-align: center;
+            margin-top: 40px;
+            padding-bottom: 20px;
+            opacity: 0.6; /* شفاف قليلاً حتى لا يزعج العين */
+            transition: opacity 0.3s;
+        }
+        .danger-zone:hover {
+            opacity: 1; /* يوضح عند الاقتراب */
+        }
+        .reset-app-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body>
@@ -119,6 +143,10 @@
             </div>
         </div>
         <div id="daysContainer"></div>
+
+        <div class="danger-zone">
+            <button class="reset-app-btn" onclick="resetAllData()">🗑️ حذف جميع البيانات والبدء من جديد</button>
+        </div>
     </div>
 
     <script>
@@ -134,8 +162,6 @@
 
         let db = JSON.parse(localStorage.getItem('ramadan_db_v2')) || {};
         let dateOffset = parseInt(localStorage.getItem('date_offset')) || 0;
-        
-        // --- 🔴 تثبيت الوزنية على 3 نهائياً ---
         const PDF_OFFSET = 3; 
 
         const savedTheme = localStorage.getItem('theme') || 'light';
@@ -177,6 +203,15 @@
             localStorage.setItem('date_offset', dateOffset);
             alert("تم تغيير تاريخ البداية.");
         }
+        
+        // --- دالة الحذف الجديدة ---
+        function resetAllData() {
+            if(confirm("تحذير! ⚠️\n\nهل أنت متأكد من حذف جميع بيانات الختمة والعودة للصفر؟\nلا يمكن التراجع عن هذا الإجراء.")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
         function getRamadanStart() {
             const d = new Date(DEFAULT_START_DATE);
             d.setDate(d.getDate() + dateOffset);
@@ -185,7 +220,7 @@
 
         function render() {
             const container = document.getElementById('daysContainer');
-            if (!container) return; // حماية من الأخطاء
+            if (!container) return; 
             container.innerHTML = '';
             
             let grandTotalPages = 0;
@@ -272,7 +307,6 @@
                     lbl.onclick = () => { chk.checked = !chk.checked; togglePrayer(dayId, p.id, chk.checked); };
                     lbl.style.cursor = 'pointer';
 
-                    // --- الوزنية +3 ---
                     const pdfPage = pStartPage + PDF_OFFSET; 
                     const pdfUrl = 'reader.html?page=' + pdfPage;
                     
@@ -330,7 +364,6 @@
             render();
         }
 
-        // تشغيل التطبيق
         render();
     </script>
 </body>
