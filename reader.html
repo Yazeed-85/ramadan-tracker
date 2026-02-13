@@ -5,7 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>مصحف رفيق القرآن</title>
     <style>
-        body { margin: 0; padding: 0; background-color: #121212; color: white; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        /* إضافة خصائص منع التكبير باللمس */
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background-color: #121212; 
+            color: white; 
+            font-family: sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; 
+            overflow: hidden; 
+            touch-action: pan-x pan-y; /* يسمح بالتمرير فقط ويمنع الزووم */
+        }
         
         /* شريط التحكم العلوي */
         .controls {
@@ -20,9 +32,14 @@
 
         /* منطقة العرض */
         #canvas-container {
-            flex: 1; overflow: auto; display: flex; justify-content: center; align-items: flex-start;
-            padding: 10px; position: relative;
-            touch-action: pan-x pan-y; /* تفعيل اللمس */
+            flex: 1; 
+            overflow: auto; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start;
+            padding: 10px; 
+            position: relative;
+            touch-action: pan-x pan-y; /* تأكيد منع الزووم على منطقة العرض */
         }
         canvas {
             box-shadow: 0 0 20px rgba(0,0,0,0.5); max-width: 100%; height: auto;
@@ -36,7 +53,6 @@
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
-        // إعداد المكتبة
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     </script>
 </head>
@@ -57,7 +73,6 @@
     </div>
 
     <script>
-        // استخراج رقم الصفحة من الرابط (مثلاً: reader.html?page=50)
         const urlParams = new URLSearchParams(window.location.search);
         let desiredPage = parseInt(urlParams.get('page')) || 1;
 
@@ -65,12 +80,11 @@
             pageNum = desiredPage,
             pageRendering = false,
             pageNumPending = null,
-            scale = 1.5, // دقة التكبير
+            scale = 1.5,
             canvas = document.getElementById('the-canvas'),
             ctx = canvas.getContext('2d');
 
-        // تحميل الملف
-        const url = 'quran.pdf'; // تأكد أن اسم ملفك مطابق تماماً لهذا
+        const url = 'quran.pdf';
         
         document.getElementById('loader').style.display = 'block';
 
@@ -79,7 +93,6 @@
             document.getElementById('pageCount').textContent = pdfDoc.numPages;
             document.getElementById('loader').style.display = 'none';
 
-            // تأكد أن الصفحة المطلوبة لا تتجاوز عدد الصفحات
             if (pageNum > pdfDoc.numPages) pageNum = pdfDoc.numPages;
             
             renderPage(pageNum);
@@ -91,15 +104,11 @@
         function renderPage(num) {
             pageRendering = true;
             
-            // جلب الصفحة
             pdfDoc.getPage(num).then(function(page) {
-                // ضبط الحجم ليناسب شاشة الجوال
                 const containerWidth = document.getElementById('canvas-container').clientWidth - 20;
                 const viewport = page.getViewport({scale: 1});
                 
-                // حساب التكبير المناسب لملء العرض
                 let outputScale = containerWidth / viewport.width;
-                // نزيد الدقة قليلاً للوضوح
                 if (outputScale < 1) outputScale = 1; 
                 
                 const scaledViewport = page.getViewport({scale: outputScale});
@@ -142,7 +151,6 @@
         }
 
         function goBack() {
-            // العودة لصفحة الجدول
             window.location.href = 'index.html';
         }
     </script>
