@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>رفيق القرآن - رمضان 1447</title>
     <meta name="theme-color" content="#1e3c72">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <style>
         :root {
             --primary: #1e3c72;
@@ -16,17 +14,14 @@
             --text-main: #2d3436;
             --text-sub: #636e72;
             --border-color: #e0e0e0;
-            
             --status-current-bg: #e8f5e9;
             --status-current-border: #4caf50;
             --status-warn-bg: #fffde7;
             --status-warn-border: #fbc02d;
             --status-danger-bg: #ffebee;
             --status-danger-border: #e57373;
-
             --separator-color: #888;
         }
-
         [data-theme="dark"] {
             --primary: #64b5f6;
             --header-grad: linear-gradient(135deg, #0d1b2a, #1b263b);
@@ -35,93 +30,62 @@
             --text-main: #e0e0e0;
             --text-sub: #b0b0b0;
             --border-color: #333;
-
             --status-current-bg: #1b3a20;
             --status-current-border: #2e7d32;
             --status-warn-bg: #3e3818;
             --status-warn-border: #f9a825;
             --status-danger-bg: #3e1b1b;
             --status-danger-border: #c62828;
-            
             --separator-color: #aaa;
         }
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; transition: background 0.3s, color 0.3s; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 0; color: var(--text-main); padding-bottom: 80px; }
-
-        /* Header */
-        header {
-            background: var(--header-grad);
-            color: white;
-            padding: 25px 15px;
-            text-align: center;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            margin-bottom: 25px;
-            position: relative;
-            z-index: 10;
-        }
+        header { background: var(--header-grad); color: white; padding: 25px 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 25px; position: relative; z-index: 10; }
         .header-title { font-size: 1.5rem; margin: 0 0 10px 0; font-weight: 800; }
         .datetime { font-size: 0.9rem; opacity: 0.9; background: rgba(255,255,255,0.15); padding: 5px 12px; border-radius: 20px; display: inline-block; margin-top: 5px; }
         .header-icons { position: absolute; top: 20px; left: 20px; display: flex; gap: 10px; z-index: 20; }
         .icon-btn { background: rgba(255,255,255,0.2); border: none; color: white; width: 44px; height: 44px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-
-        /* Container */
         .container { max-width: 600px; margin: 0 auto; padding: 0 15px; display: flex; flex-direction: column; gap: 20px; padding-left: 20px; }
-
-        /* Summary Box */
         .summary-box { background: var(--card-bg); padding: 20px; border-radius: 16px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
         .summary-number { font-size: 3.5rem; font-weight: 800; color: var(--primary); line-height: 1; margin: 10px 0; }
         .summary-label { color: var(--text-sub); font-size: 0.95rem; }
-
-        /* Floating Tracker */
         .floating-tracker { position: fixed; left: 20px; top: 160px; z-index: 100; display: flex; align-items: center; justify-content: center; pointer-events: none; }
         .tracker-bubble { background: var(--primary); color: white; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 2px solid rgba(255,255,255,0.9); pointer-events: auto; }
         [data-theme="dark"] .tracker-bubble { border-color: #333; color: #121212; }
-
-        /* Day Cards */
         .day-card { background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .day-card.current { background-color: var(--status-current-bg); border: 2px solid var(--status-current-border); border-width: 2px; }
         .day-card.missed-yellow { background-color: var(--status-warn-bg); border: 2px solid var(--status-warn-border); }
         .day-card.missed-red { background-color: var(--status-danger-bg); border: 2px solid var(--status-danger-border); }
-
         .card-header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
         .date-group { display: flex; flex-direction: column; gap: 4px; }
         .day-name { font-weight: 700; font-size: 1.1rem; color: var(--text-main); }
         .day-date { font-size: 0.85rem; color: var(--text-sub); }
         .status-badge { font-size: 0.9rem; font-weight: bold; background: rgba(0,0,0,0.05); padding: 4px 10px; border-radius: 12px; min-width: 60px; text-align: center; }
         [data-theme="dark"] .status-badge { background: rgba(255,255,255,0.1); }
-
         .card-body { max-height: 0; overflow: hidden; transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1); background: rgba(127, 127, 127, 0.03); }
         .card-body.open { max-height: 800px; border-top: 1px solid var(--border-color); }
-
         .prayer-list { padding: 15px 20px; }
         .prayer-item { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color); gap: 10px; }
         .prayer-item:last-child { border-bottom: none; }
         .custom-checkbox { width: 24px; height: 24px; accent-color: var(--primary); cursor: pointer; }
         .prayer-label { font-size: 1rem; flex: 1; color: var(--text-main); display: flex; flex-direction: column; }
         .page-range { font-size: 0.85rem; color: var(--text-sub); margin-top: 2px; }
-
+        
         /* Read Button */
         .read-btn { background-color: #27ae60; color: white; border: none; border-radius: 8px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; flex-shrink: 0; text-decoration: none; }
         .read-btn:hover { transform: scale(1.1); background-color: #219150; }
-
+        
         .complete-btn { width: calc(100% - 40px); margin: 0 20px 20px 20px; padding: 14px; background-color: var(--primary); color: var(--bg); border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; }
         .complete-btn.done { background-color: #27ae60; color: white; pointer-events: none; }
         [data-theme="dark"] .complete-btn { color: #000; }
-
-        /* Settings Modal */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 5000; align-items: center; justify-content: center; flex-direction: column; }
         .settings-container { background: var(--card-bg); width: 90%; max-width: 400px; padding: 20px; border-radius: 15px; color: var(--text-main); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .settings-row { margin: 15px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
         .num-control { display: flex; gap: 10px; align-items: center; }
         .control-btn { background: var(--primary); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; font-weight: bold; cursor: pointer; }
         .external-btn { background: #d4ac0d; color: #000; border: none; padding: 5px 15px; border-radius: 5px; font-weight: bold; text-decoration: none; font-size: 0.85rem; }
-
         .separator { text-align: center; margin: 30px 0 20px 0; color: var(--separator-color); font-weight: bold; font-size: 0.95rem; position: relative; opacity: 0.8; }
         .separator::before, .separator::after { content: ''; display: inline-block; width: 50px; height: 1px; background: var(--separator-color); vertical-align: middle; margin: 0 10px; opacity: 0.5; }
-
     </style>
 </head>
 <body>
@@ -133,12 +97,10 @@
     <div id="settingsModal" class="modal-overlay" onclick="closeSettings(event)">
         <div class="settings-container">
             <h3>⚙️ الإعدادات</h3>
-            
             <div class="settings-row">
                 <span>تعديل بداية رمضان</span>
-                <button class="external-btn" onclick="adjustStartDate()">تغيير (±1 يوم)</button>
+                <button class="external-btn" onclick="adjustStartDate()">تغيير (+1 يوم)</button>
             </div>
-
             <div class="settings-row">
                 <div style="text-align: right;">
                     <span>وزنية صفحات PDF</span><br>
@@ -150,7 +112,6 @@
                     <button class="control-btn" onclick="changePdfOffset(1)">+</button>
                 </div>
             </div>
-
             <button class="complete-btn" onclick="closeSettings(null)">حفظ وإغلاق</button>
         </div>
     </div>
@@ -165,7 +126,6 @@
     </header>
 
     <div class="container">
-        
         <div class="summary-box">
             <div class="summary-label">إجمالي ما قرأت حتى الآن</div>
             <div class="summary-number" id="mainTotal">0</div>
@@ -174,12 +134,10 @@
                 (كل يوم 20 صفحة = ختمة كاملة)
             </div>
         </div>
-
         <div id="daysContainer"></div>
     </div>
 
     <script>
-        // --- Config ---
         const DEFAULT_START_DATE = new Date(2026, 1, 18); 
         const DAYS_TOTAL = 30;
         const PRAYERS = [
@@ -190,17 +148,15 @@
             { id: 'isha', name: 'العشاء', pages: 4 }
         ];
 
-        // --- State ---
         let db = JSON.parse(localStorage.getItem('ramadan_db_v2')) || {};
         let dateOffset = parseInt(localStorage.getItem('date_offset')) || 0;
         let pdfPageOffset = parseInt(localStorage.getItem('pdf_offset'));
-        if (isNaN(pdfPageOffset)) pdfPageOffset = 4; // Default Offset
+        if (isNaN(pdfPageOffset)) pdfPageOffset = 4;
 
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
 
-        // --- Clock ---
         function updateClock() {
             const now = new Date();
             const dayName = now.toLocaleDateString('ar-SA', { weekday: 'long' });
@@ -211,7 +167,6 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        // --- Theme ---
         function toggleTheme() {
             const current = document.documentElement.getAttribute('data-theme');
             const newTheme = current === 'light' ? 'dark' : 'light';
@@ -223,7 +178,6 @@
             document.getElementById('themeBtn').innerText = theme === 'light' ? '🌙' : '☀️';
         }
 
-        // --- Settings Management ---
         function openSettings() {
             document.getElementById('settingsModal').style.display = 'flex';
             document.getElementById('offsetDisplay').innerText = (pdfPageOffset >= 0 ? '+' : '') + pdfPageOffset;
@@ -250,7 +204,6 @@
             return d;
         }
 
-        // --- Main Render ---
         function render() {
             const container = document.getElementById('daysContainer');
             container.innerHTML = '';
@@ -342,15 +295,18 @@
                     lbl.onclick = () => { chk.checked = !chk.checked; togglePrayer(dayId, p.id, chk.checked); };
                     lbl.style.cursor = 'pointer';
 
-                    // --- زر القراءة (يفتح في تبويب جديد) ---
+                    // --- التعديل هنا: الربط بملف reader.html ---
                     const pdfPage = pStartPage + pdfPageOffset;
-                    const pdfUrl = `quran.pdf#page=${pdfPage}`;
+                    // نرسل رقم الصفحة للعارض الجديد
+                    const pdfUrl = 'reader.html?page=' + pdfPage;
                     
                     const readLink = document.createElement('a');
                     readLink.className = 'read-btn';
                     readLink.innerHTML = '📖';
                     readLink.href = pdfUrl;
-                    readLink.target = "_blank"; // فتح في نافذة جديدة (أهم نقطة للموبايل)
+                    // لا تفتح في نافذة جديدة، افتح في نفس النافذة ليكون كأنه تطبيق واحد (أجمل)
+                    // أو اجعلها _self
+                    readLink.target = "_self"; 
                     readLink.onclick = (e) => e.stopPropagation();
 
                     row.appendChild(chk);
