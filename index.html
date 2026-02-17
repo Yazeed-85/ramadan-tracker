@@ -45,7 +45,6 @@
         header { background: var(--header-grad); color: white; padding: 25px 15px; text-align: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); margin-bottom: 25px; position: relative; z-index: 10; }
         .header-title { font-size: 1.5rem; margin: 0 0 5px 0; font-weight: 800; }
         
-        /* تنسيق رقم الإصدار */
         .version-tag { font-size: 0.8rem; opacity: 0.8; font-family: monospace; letter-spacing: 1px; margin-bottom: 5px; display: block; }
 
         .datetime { font-size: 0.9rem; opacity: 0.9; background: rgba(255,255,255,0.15); padding: 5px 12px; border-radius: 20px; display: inline-block; margin-top: 5px; }
@@ -82,7 +81,6 @@
         .complete-btn.done { background-color: #27ae60; color: white; pointer-events: none; }
         [data-theme="dark"] .complete-btn { color: #000; }
         
-        /* Modal Styles */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 5000; align-items: center; justify-content: center; flex-direction: column; }
         .modal-container { background: var(--card-bg); width: 90%; max-width: 400px; padding: 20px; border-radius: 15px; color: var(--text-main); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-height: 85vh; overflow-y: auto; }
         .settings-row { margin: 15px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
@@ -90,7 +88,6 @@
         .separator { text-align: center; margin: 30px 0 20px 0; color: var(--separator-color); font-weight: bold; font-size: 0.95rem; position: relative; opacity: 0.8; }
         .separator::before, .separator::after { content: ''; display: inline-block; width: 50px; height: 1px; background: var(--separator-color); vertical-align: middle; margin: 0 10px; opacity: 0.5; }
         
-        /* تنسيق الفوتر والأزرار */
         .footer-actions { display: flex; justify-content: center; gap: 15px; margin-top: 40px; padding-bottom: 30px; }
         .action-btn { border: none; padding: 8px 20px; border-radius: 20px; font-size: 0.9rem; cursor: pointer; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: transform 0.2s; }
         .action-btn:active { transform: scale(0.95); }
@@ -98,7 +95,6 @@
         .reset-btn:hover { opacity: 1; }
         .about-btn { background-color: var(--primary); color: white; }
 
-        /* تنسيق نافذة حول */
         .about-content { text-align: right; line-height: 1.6; }
         .about-section { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
         .about-section:last-child { border: none; }
@@ -113,17 +109,6 @@
 
     <div class="floating-tracker">
         <div class="tracker-bubble"><span id="floatCount">0</span></div>
-    </div>
-
-    <div id="settingsModal" class="modal-overlay" onclick="closeModal('settingsModal', event)">
-        <div class="modal-container">
-            <h3>⚙️ الإعدادات</h3>
-            <div class="settings-row">
-                <span>تعديل بداية رمضان</span>
-                <button class="external-btn" onclick="adjustStartDate()">تغيير (±1 يوم)</button>
-            </div>
-            <button class="complete-btn" onclick="closeModal('settingsModal', null)">حفظ وإغلاق</button>
-        </div>
     </div>
 
     <div id="aboutModal" class="modal-overlay" onclick="closeModal('aboutModal', event)">
@@ -162,8 +147,7 @@
     <header>
         <div class="header-icons">
             <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">🌙</button>
-            <button class="icon-btn" onclick="openModal('settingsModal')">⚙️</button>
-        </div>
+            </div>
         <h1 class="header-title">رفيق القرآن 🌙</h1>
         <span class="version-tag">V1.2</span>
         <div class="datetime" id="clock">...</div>
@@ -190,6 +174,7 @@
     </div>
 
     <script>
+        // تثبيت بداية رمضان على 18 فبراير 2026 (الأربعاء)
         const DEFAULT_START_DATE = new Date(2026, 1, 18); 
         const DAYS_TOTAL = 30;
         const PRAYERS = [
@@ -235,14 +220,7 @@
         function closeModal(modalId, e) {
             if (e === null || e.target.id === modalId || e.target.classList.contains('complete-btn')) {
                 document.getElementById(modalId).style.display = 'none';
-                if(modalId === 'settingsModal') render();
             }
-        }
-
-        function adjustStartDate() {
-            dateOffset = (dateOffset === 0) ? 1 : 0;
-            localStorage.setItem('date_offset', dateOffset);
-            alert("تم تغيير تاريخ البداية.");
         }
         
         function resetAllData() {
